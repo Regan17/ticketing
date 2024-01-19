@@ -1,0 +1,19 @@
+<!-- submit_ticket.html -->
+{% comment %} {% extends 'base.html' %} {% endcomment %}
+
+{% block content %}
+  <h2>Submit a Service Ticket</h2>
+  <form method="post" action="{% url 'submit_ticket' %}">
+    {% csrf_token %}
+    <label for="incident_details">Incident Details:</label>
+    <input type="text" name="incident_details" required>
+
+    <label for="user_information">User Information:</label>
+    <input type="text" name="user_information" required>
+
+    <input type="hidden" name="client_id" value="{{ client_id }}">
+    <input type="hidden" name="redirect_uri" value="{{ redirect_uri }}">
+
+    <button type="submit">Submit</button>
+  </form>
+{% endblock %}

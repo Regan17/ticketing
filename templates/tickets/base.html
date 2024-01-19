@@ -1,0 +1,28 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Your Site{% endblock %}</title>
+    <!-- Additional CSS or meta tags can be included here -->
+</head>
+<body>
+    <header>
+        <!-- Header content goes here -->
+        <h1>Your Site Header</h1>
+    </header>
+
+    <div id="content">
+        <!-- This is where the content of child templates will be inserted -->
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <!-- Footer content goes here -->
+        <p>&copy; 2024 Your Site. All rights reserved.</p>
+    </footer>
+
+    <!-- Additional JavaScript or scripts can be included here -->
+</body>
+</html>
