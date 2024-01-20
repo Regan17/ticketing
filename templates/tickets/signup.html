@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Signup</title>
+    <!-- CSS -->
+    <link rel="stylesheet">
+    <style>
+        /* Google Fonts - Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #1e1e1e;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            border-radius: 6px;
+            background: #212121;
+        }
+
+        header {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1db954;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .field {
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .field input {
+            height: 40px;
+            width: 100%;
+            outline: none;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #565656;
+            border-radius: 6px;
+            background-color: #282828;
+            color: #fff;
+        }
+
+        .field input:focus {
+            border-color: #1db954;
+        }
+
+        .field button {
+            height: 40px;
+            width: 100%;
+            border: none;
+            border-radius: 6px;
+            background-color: #1db954;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .field button:hover {
+            background-color: #25a056;
+        }
+
+        .form-link {
+            margin-top: 20px;
+        }
+
+        .form-link a {
+            color: #1db954;
+            text-decoration: none;
+        }
+
+        .form-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div style="position: fixed; top: 10px; right: 10px; z-index: 9999; width: 300px;">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                <strong>Message:</strong> {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    </div>
+    
+
+    <div class="container">
+        <header>Signup</header>
+        <form action="/signup" method="post">
+            {% csrf_token %}
+            <div class="field">
+                <input type="text" name="first_name" id="id_first_name" placeholder="First Name">
+            </div>
+            <div class="field">
+                <input type="text" name="last_name" id="id_last_name" placeholder="Last Name">
+            </div>
+            <div class="field">
+                <input type="username" name="username" id="id_username" placeholder="Username">
+            </div>
+            <div class="field">
+                <input type="email" name="email" id="id_email" placeholder="Email">
+            </div>
+            <div class="field">
+                <input type="password" name="password" id="id_password" placeholder="Password">
+            </div>
+            <div class="field">
+                <input type="password" name="confirm_password" id="id_confirm_password" placeholder="Confirm Password">
+            </div>
+            <div class="field">
+                <button type="submit">Signup</button>
+            </div>
+        </form>
+        <div class="form-link">
+            <span>Already have an account? <a href="/signin">Login</a></span>
+        </div>
+    </div>
+</body>
+</html>
