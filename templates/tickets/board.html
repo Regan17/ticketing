@@ -1,121 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kanban Board</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #1c1c1c;
-            color: #fff;
-        }
+<!-- board.html -->
+{% comment %} {% extends 'base.html' %} {% endcomment %}
 
-        .kanban-board {
-            display: flex;
-            justify-content: space-around;
-            padding: 20px;
-        }
+{% block content %}
+  <style>
+    body {
+      background-color: #191414;  /* Spotify black background */
+      color: #1DB954;  /* Spotify green text */
+      font-family: 'Arial', sans-serif;
+    }
 
-        .column {
-            flex: 1;
-            min-width: 250px;
-            background-color: #272727;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            margin: 0 10px;
-            padding: 15px;
-            box-sizing: border-box;
-            transition: background-color 0.3s;
-        }
+    .board {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+    }
 
-        .column:hover {
-            background-color: #1e1e1e;
-        }
+    .column {
+      flex: 1;
+      max-width: 300px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow effect */
+      background-color: #282828;  /* Darker Spotify background */
+    }
 
-        .column-header {
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            color: #61dafb;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
+    .column-title {
+      color: #1DB954;  /* Spotify green text */
+      margin-bottom: 15px;
+    }
 
-        .task {
-            background-color: #1e1e1e;
-            color: #fff;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            transition: background-color 0.3s;
-            cursor: pointer;
-        }
+    .ticket {
+      background-color: #333;  /* Dark grey background */
+      border: 1px solid #1DB954;  /* Spotify green border */
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+      color: #fff;  /* White text */
+      transition: background-color 0.3s ease;
+    }
 
-        .task:hover {
-            background-color: #272727;
-        }
+    .ticket:hover {
+      background-color: #1DB954;  /* Darker green on hover */
+    }
 
-        .task::before {
-            content: '\2022'; /* Bullet point */
-            color: #61dafb;
-            margin-right: 10px;
-        }
+    .submit-ticket-button {
+      background-color: #1DB954;  /* Spotify green background */
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fade-in 0.5s ease-out forwards, slide-up 0.5s ease-out forwards 0.2s;
+    }
 
-        .create-button {
-            background-color: #61dafb;
-            color: #1c1c1c;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
+    .submit-ticket-button:hover {
+      background-color: #25a85c;  /* Darker green on hover */
+    }
 
-        .create-button:hover {
-            transform: scale(1.05);
-        }
+    @keyframes fade-in {
+      to {
+        opacity: 1;
+      }
+    }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    @keyframes slide-up {
+      to {
+        transform: translateY(0);
+      }
+    }
+  </style>
 
-        .fadeIn {
-            animation: fadeIn 0.5s ease-out;
-        }
-    </style>
-</head>
-<body>
-    <div class="kanban-board">
-        <div class="column">
-            <div class="column-header">To Do</div>
-            <div class="task fadeIn">Task 1</div>
-            <div class="task fadeIn">Task 2</div>
-        </div>
-        <div class="column">
-            <div class="column-header">In Progress</div>
-            <div class="task fadeIn">Task 3</div>
-            <div class="task fadeIn">Task 4</div>
-        </div>
-        <div class="column">
-            <div class="column-header">Done</div>
-            <div class="task fadeIn">Task 5</div>
-            <div class="task fadeIn">Task 6</div>
-            <a href="ticketform" class="create-button fadeIn">Create New Ticket</a>
-        </div>
+  <div class="board">
+    <div class="column">
+      <h3 class="column-title">To Do</h3>
+      <div class="ticket">Task: Learn about issue types</div>
     </div>
 
-</body>
-</html>
+    <div class="column">
+      <h3 class="column-title">In Progress</h3>
+      <div class="ticket">General Request: Explore request type fields</div>
+    </div>
+
+    <div class="column">
+      <h3 class="column-title">Done</h3>
+      <div class="ticket">Task: Create a dynamic form</div>
+    </div>
+  </div>
+
+  <button class="submit-ticket-button" onclick="location.href='{% url 'submit_ticket' %}'">Create New Ticket</button>
+{% endblock %}

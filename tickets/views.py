@@ -172,12 +172,31 @@ def index(request):
     return render(request,"tickets/index.html")
 
 def submit_ticket(request):
-    print('reached submit ticket')
     if request.method == 'POST':
         form = TicketForm(request.POST)
         if form.is_valid():
-            print('form is valid')
             ticket = form.save()
+            print("Form Data:", request.POST)
+            # Use the newly created fields in your Jira API request
+            jira_issue_data = {
+                'fields': {
+                    'project': {'key': 'TIC'},
+                    'summary': ticket.summary,
+                    'description': {
+                        'type': 'doc',
+                        'version': 1,
+                        'content': [
+                            {
+                                'type': 'paragraph',
+                                'content': [{'type': 'text', 'text': ticket.description}]
+                            }
+                        ]
+                    },
+                }
+            }
+
+            # The rest of your Jira API request logic goes here
+
             application_name = 'Ticketmanager'  # Update with your application name
             redirect_uri = request.build_absolute_uri(reverse('oauth_callback'))
             authorization_url = "https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=gZGT3o3zVpVYwaT3OApjNa6XJ7oBpF6h&scope=read%3Ajira-work%20read%3Ajira-user%20write%3Ajira-work%20manage%3Ajira-project&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2Foauth-callback%2F&state=${YOUR_USER_BOUND_VALUE}&response_type=code&prompt=consent"
@@ -267,22 +286,21 @@ def view_using_jira_api(request):
     jira_api_url = f'https://api.atlassian.com/ex/jira/{cloudid}/rest/api/3/issue'
     print("here also")
     headers['Content-Type'] = 'application/json'  # Add this line to headers
-
     jira_issue_data = {
         'fields': {
             'project': {'key': 'TIC'},
-            'summary': ticket.incident_details,
+            'summary': str(ticket.summary),  # Ensure that summary is a string
             'description': {
                 'type': 'doc',
                 'version': 1,
                 'content': [
                     {
                         'type': 'paragraph',
-                        'content': [{'type': 'text', 'text': ticket.user_information}]
+                        'content': [{'type': 'text', 'text': ticket.description}]
                     }
                 ]
             },
-            'issuetype': {'name': 'Task'}
+            'issuetype': {'name': 'Task'}, # Retrieve issue type from the form
         }
     }
 
@@ -293,7 +311,7 @@ def view_using_jira_api(request):
         if jira_response.status_code == 201:
             print("Jira issue created successfully!")
             created_issue_key = jira_response.json().get('key')
-            return render(request,'tickets/board.html')
+            return render(request, 'tickets/board.html')
         else:
             print("Failed to create Jira issue. Status Code:", jira_response.status_code)
             print("Error response:", jira_response.json())
@@ -302,11 +320,6 @@ def view_using_jira_api(request):
     except requests.RequestException as e:
         print("Exception during Jira API request:", str(e))
         return render(request, 'tickets/error.html')
-    context = {
-        'cloudid': cloudid,
-        'project_key': 'TIC',  # Replace with your actual Jira project key
-    }
-
 # "description": {
 #       "content": [
 #         {

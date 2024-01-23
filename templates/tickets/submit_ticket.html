@@ -2,18 +2,101 @@
 {% comment %} {% extends 'base.html' %} {% endcomment %}
 
 {% block content %}
-  <h2>Submit a Service Ticket</h2>
-  <form method="post" action="{% url 'submit_ticket' %}">
-    {% csrf_token %}
-    <label for="incident_details">Incident Details:</label>
-    <input type="text" name="incident_details" required>
+  <style>
+    body {
+      background-color: #191414;  /* Spotify black background */
+      color: #1DB954;  /* Spotify green text */
+      font-family: 'Arial', sans-serif;
+    }
 
-    <label for="user_information">User Information:</label>
-    <input type="text" name="user_information" required>
+    .ticket-form {
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow effect */
+      background-color: #282828;  /* Darker Spotify background */
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fade-in 0.5s ease-out forwards;
+    }
+
+    .label {
+      color: #1DB954;  /* Spotify green text */
+    }
+
+    .select-field,
+    .text-field,
+    .textarea-field {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #1DB954;  /* Spotify green border */
+      border-radius: 5px;
+      background-color: #333;  /* Dark grey background */
+      color: #fff;  /* White text */
+      transition: border-color 0.3s ease, transform 0.5s ease-out, opacity 0.5s ease-out;
+    }
+
+    .select-field:focus,
+    .text-field:focus,
+    .textarea-field:focus {
+      border-color: #1DB954;  /* Darker green border on focus */
+    }
+
+    .submit-button {
+      background-color: #1DB954;  /* Spotify green background */
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.5s ease-out;
+      display: block;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fade-in 0.5s ease-out forwards, slide-up 0.5s ease-out forwards 0.2s;
+    }
+
+    .submit-button:hover {
+      background-color: #25a85c;  /* Darker green on hover */
+    }
+
+    @keyframes fade-in {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slide-up {
+      to {
+        transform: translateY(0);
+      }
+    }
+  </style>
+
+  <form method="post" action="{% url 'submit_ticket' %}" class="ticket-form">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="summary" class="label">Summary*</label>
+      <input type="text" name="summary" required class="text-field">
+    </div>
+
+    <div class="form-group">
+      <label for="description" class="label">Description</label>
+      <textarea name="description" rows="4" class="textarea-field"></textarea>
+    </div>
 
     <input type="hidden" name="client_id" value="{{ client_id }}">
     <input type="hidden" name="redirect_uri" value="{{ redirect_uri }}">
 
-    <button type="submit">Submit</button>
+    <button type="submit" class="submit-button">Submit</button>
   </form>
 {% endblock %}
